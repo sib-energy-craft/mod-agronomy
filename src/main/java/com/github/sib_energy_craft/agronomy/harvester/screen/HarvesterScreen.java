@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public class HarvesterScreen extends HandledScreen<HarvesterScreenHandler> {

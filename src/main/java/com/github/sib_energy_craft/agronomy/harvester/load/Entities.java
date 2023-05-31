@@ -7,7 +7,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import static com.github.sib_energy_craft.sec_utils.utils.EntityUtils.register;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public final class Entities implements DefaultModInitializer {

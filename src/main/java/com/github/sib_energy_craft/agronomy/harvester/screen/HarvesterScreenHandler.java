@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public class HarvesterScreenHandler extends AbstractHarvesterScreenHandler {

@@ -9,7 +9,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public abstract class AbstractHarvesterScreenHandler extends AbstractEnergyMachineScreenHandler {

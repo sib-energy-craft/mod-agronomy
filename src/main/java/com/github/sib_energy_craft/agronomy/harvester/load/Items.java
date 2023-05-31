@@ -9,7 +9,7 @@ import net.minecraft.item.ItemGroups;
 import static com.github.sib_energy_craft.sec_utils.utils.ItemUtils.register;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public final class Items implements DefaultModInitializer {

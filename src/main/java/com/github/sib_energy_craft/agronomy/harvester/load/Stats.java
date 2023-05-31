@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import static net.minecraft.stat.Stats.CUSTOM;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public final class Stats implements DefaultModInitializer {

@@ -24,7 +24,7 @@ import org.joml.Vector2i;
 import java.util.Objects;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBlock>

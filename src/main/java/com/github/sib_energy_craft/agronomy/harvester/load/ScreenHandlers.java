@@ -8,7 +8,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import static com.github.sib_energy_craft.sec_utils.utils.ScreenUtils.registerHandler;
 
 /**
- * @since 0.0.1
+ * @since 0.0.2
  * @author sibmaks
  */
 public final class ScreenHandlers implements DefaultModInitializer {
