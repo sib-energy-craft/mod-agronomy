@@ -15,6 +15,16 @@
     "minecraft": "1.19.4"
   },
   "entrypoints": {
+    "main": [
+      "com.github.sib_energy_craft.agronomy.harvester.load.Blocks",
+      "com.github.sib_energy_craft.agronomy.harvester.load.Entities",
+      "com.github.sib_energy_craft.agronomy.harvester.load.Items",
+      "com.github.sib_energy_craft.agronomy.harvester.load.ScreenHandlers",
+      "com.github.sib_energy_craft.agronomy.harvester.load.Stats"
+    ],
+    "client": [
+      "com.github.sib_energy_craft.agronomy.harvester.load.client.Screens"
+    ]
   },
   "mixins": [
     "mod.agronomy.mixin.json"

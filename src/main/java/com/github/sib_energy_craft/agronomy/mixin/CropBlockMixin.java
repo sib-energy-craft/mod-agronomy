@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.server.world.ServerWorld;
@@ -20,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -58,7 +56,14 @@ public abstract class CropBlockMixin extends AbstractBlock {
                     .parameter(LootContextParameters.ORIGIN, player.getPos()).random(player.getRandom())
                     .parameter(LootContextParameters.TOOL, player.getStackInHand(hand))
             );
+            var cropItem = asItem();
             for (var stack : droppedStacks) {
+                if(stack.isEmpty()) {
+                    continue;
+                }
+                if(stack.getItem() == cropItem) {
+                    stack.decrement(1);
+                }
                 if (!player.getInventory().insertStack(stack)) {
                     player.dropItem(stack, false);
                 }

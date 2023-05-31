@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SVS",
+    "#B#",
+    "ECE"
+  ],
+  "key": {
+    "E": {
+      "item": "sib_energy_craft:energy_circuit"
+    },
+    "V": {
+      "item": "minecraft:hopper"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "#": {
+      "item": "sib_energy_craft:iron_plate"
+    },
+    "B": {
+      "item": "sib_energy_craft:base_machine_body"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:harvester"
+  }
+}
