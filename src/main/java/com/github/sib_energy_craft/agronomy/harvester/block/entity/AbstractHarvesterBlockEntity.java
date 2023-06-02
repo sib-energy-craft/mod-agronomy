@@ -11,7 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -105,16 +105,13 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
         var neighborState = world.getBlockState(neighborPos);
         var neighborBlock = neighborState.getBlock();
         if (neighborBlock instanceof CropBlock cropBlock) {
-            var ageProperty = cropBlock.getAgeProperty();
-            var age = neighborState.get(ageProperty);
-            var maxAge = ageProperty.getValues().stream()
-                    .max(Integer::compareTo)
-                    .orElse(0);
+            var age = cropBlock.getAge(neighborState);
+            var maxAge = cropBlock.getMaxAge();
             if (Objects.equals(age, maxAge)) {
-                var droppedStacks = neighborState.getDroppedStacks(new LootContext.Builder(serverWorld)
-                        .parameter(LootContextParameters.ORIGIN, neighborPos.toCenterPos()).random(world.getRandom())
-                        .parameter(LootContextParameters.TOOL, toolStack)
-                );
+                var builder = new LootContextParameterSet.Builder(serverWorld)
+                        .add(LootContextParameters.ORIGIN, neighborPos.toCenterPos())
+                        .add(LootContextParameters.TOOL, toolStack);
+                var droppedStacks = neighborState.getDroppedStacks(builder);
                 boolean canInsert = true;
                 var neighborItem = neighborBlock.asItem();
                 for (var stack : droppedStacks) {

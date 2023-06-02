@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.IntProperty;
@@ -52,10 +52,11 @@ public abstract class CropBlockMixin extends AbstractBlock {
                 .max(Integer::compareTo)
                 .orElse(0);
         if(Objects.equals(age, maxAge)) {
-            var droppedStacks = state.getDroppedStacks(new LootContext.Builder(serverWorld)
-                    .parameter(LootContextParameters.ORIGIN, player.getPos()).random(player.getRandom())
-                    .parameter(LootContextParameters.TOOL, player.getStackInHand(hand))
-            );
+            var builder = new LootContextParameterSet.Builder(serverWorld)
+                    .add(LootContextParameters.ORIGIN, pos.toCenterPos())
+                    .add(LootContextParameters.TOOL, player.getStackInHand(hand))
+                    .luck(player.getLuck());
+            var droppedStacks = state.getDroppedStacks(builder);
             var cropItem = asItem();
             for (var stack : droppedStacks) {
                 if(stack.isEmpty()) {
