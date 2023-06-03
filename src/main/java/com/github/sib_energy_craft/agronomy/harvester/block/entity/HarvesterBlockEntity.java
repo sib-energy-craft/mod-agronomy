@@ -7,15 +7,14 @@ import com.github.sib_energy_craft.machines.screen.AbstractEnergyMachineScreenHa
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 /**
  * @since 0.0.2
@@ -34,27 +33,7 @@ public class HarvesterBlockEntity extends AbstractHarvesterBlockEntity<Harvester
     }
 
     @Override
-    public @Nullable Recipe<Inventory> getRecipe(@NotNull World world, int process) {
-        throw new UnsupportedOperationException("Machine is not craft items");
-    }
-
-    @Override
-    public int getCookTimeTotal(@NotNull World world) {
-        return 0;
-    }
-
-    @Override
-    protected boolean canAcceptRecipeOutput(int process, @NotNull World world, @NotNull Recipe<Inventory> recipe, int count) {
-        throw new UnsupportedOperationException("Machine is not craft items");
-    }
-
-    @Override
-    public boolean craftRecipe(int process, @NotNull World world, @NotNull Recipe<Inventory> recipe, int decrement, int maxCount) {
-        throw new UnsupportedOperationException("Machine is not craft items");
-    }
-
-    @Override
-    protected AbstractEnergyMachineScreenHandler createScreenHandler(int syncId,
+    protected AbstractEnergyMachineScreenHandler<?> createScreenHandler(int syncId,
                                                                      @NotNull PlayerInventory playerInventory,
                                                                      @NotNull PlayerEntity player) {
         return new HarvesterScreenHandler(syncId, playerInventory, this);
