@@ -1,6 +1,7 @@
 package com.github.sib_energy_craft.agronomy.harvester.screen;
 
 import com.github.sib_energy_craft.machines.screen.AbstractEnergyMachineScreenHandler;
+import com.github.sib_energy_craft.machines.screen.EnergyMachineState;
 import com.github.sib_energy_craft.machines.screen.layout.SlotLayoutManager;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.0.2
  * @author sibmaks
  */
-public abstract class AbstractHarvesterScreenHandler extends AbstractEnergyMachineScreenHandler {
+public abstract class AbstractHarvesterScreenHandler extends AbstractEnergyMachineScreenHandler<EnergyMachineState> {
 
     protected AbstractHarvesterScreenHandler(@NotNull ScreenHandlerType<?> type,
                                              int syncId,
@@ -20,7 +21,7 @@ public abstract class AbstractHarvesterScreenHandler extends AbstractEnergyMachi
                                              int sourceSlots,
                                              int outputSlots,
                                              @NotNull SlotLayoutManager slotLayoutManager) {
-        super(type, syncId, playerInventory, sourceSlots, outputSlots, slotLayoutManager);
+        super(type, syncId, playerInventory, sourceSlots, outputSlots, new EnergyMachineState(), slotLayoutManager);
     }
 
     protected AbstractHarvesterScreenHandler(@NotNull ScreenHandlerType<?> type,
@@ -30,7 +31,7 @@ public abstract class AbstractHarvesterScreenHandler extends AbstractEnergyMachi
                                              int sourceSlots,
                                              int outputSlots,
                                              @NotNull SlotLayoutManager slotLayoutManager) {
-        super(type, syncId, playerInventory, inventory, sourceSlots, outputSlots, slotLayoutManager);
+        super(type, syncId, playerInventory, inventory, sourceSlots, outputSlots, new EnergyMachineState(), slotLayoutManager);
     }
 
     @Override

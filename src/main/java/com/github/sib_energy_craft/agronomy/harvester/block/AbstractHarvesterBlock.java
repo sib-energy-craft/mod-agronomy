@@ -79,6 +79,6 @@ public abstract class AbstractHarvesterBlock extends AbstractEnergyMachineBlock 
             @NotNull BlockEntityType<T> givenType,
             @NotNull BlockEntityType<E> expectedType) {
         return world.isClient ? null : AbstractHarvesterBlock.checkType(givenType, expectedType,
-                AbstractHarvesterBlockEntity::harvestTick);
+                AbstractHarvesterBlockEntity::simpleProcessingTick);
     }
 }
