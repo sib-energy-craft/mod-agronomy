@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " V ",
+    "EBE",
+    " D "
+  ],
+  "key": {
+    "E": {
+      "item": "sib_energy_craft:energy_circuit"
+    },
+    "V": {
+      "item": "minecraft:hopper"
+    },
+    "B": {
+      "item": "sib_energy_craft:base_machine_body"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    }
+  },
+  "result": {
+    "item": "sib_energy_craft:feeding_station"
+  }
+}
