@@ -1,5 +1,12 @@
 {
   "container.harvester": "Сборщик урожая",
   "block.sib_energy_craft.harvester": "Сборщик урожая",
-  "stat.sib_energy_craft.interact_with_harvester": "Использований сборщика урожая"
+  "stat.sib_energy_craft.interact_with_harvester": "Использований сборщика урожая",
+
+  "container.feeding_station": "Станция кормления",
+  "block.sib_energy_craft.feeding_station": "Станция кормления",
+  "stat.sib_energy_craft.interact_with_feeding_station": "Использований станции кормления",
+  "screen.sib_energy_craft.feeding_station.button.mode.adult_only": "Только взрослых",
+  "screen.sib_energy_craft.feeding_station.button.mode.baby_only": "Только детей",
+  "screen.sib_energy_craft.feeding_station.button.mode.all": "Всех"
 }

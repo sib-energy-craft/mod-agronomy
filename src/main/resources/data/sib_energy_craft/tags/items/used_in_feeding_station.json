@@ -1,0 +1,34 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wheat",
+    "minecraft:wheat_seeds",
+    "minecraft:melon_seeds",
+    "minecraft:pumpkin_seeds",
+    "minecraft:beetroot_seeds",
+    "minecraft:torchflower_seeds",
+    "minecraft:pitcher_pod",
+    "minecraft:sugar",
+    "minecraft:carrot",
+    "minecraft:golden_carrot",
+    "minecraft:dandelion",
+    "minecraft:hay_block",
+    "minecraft:potato",
+    "minecraft:beetroot",
+    "minecraft:apple",
+    "minecraft:golden_apple",
+    "minecraft:enchanted_golden_apple",
+    "minecraft:bamboo",
+    "minecraft:slime_ball",
+    "minecraft:seagrass",
+    "minecraft:warped_fungus",
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:crimson_fungus",
+    "#minecraft:flowers",
+    "#minecraft:fox_food",
+    "#minecraft:axolotl_tempt_items",
+    "#minecraft:sniffer_food"
+
+  ]
+}

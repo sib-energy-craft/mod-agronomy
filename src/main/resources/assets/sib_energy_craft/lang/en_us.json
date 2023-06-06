@@ -1,5 +1,12 @@
 {
   "container.harvester": "Harvester",
   "block.sib_energy_craft.harvester": "Harvester",
-  "stat.sib_energy_craft.interact_with_harvester": "Interactions with Harvester"
+  "stat.sib_energy_craft.interact_with_harvester": "Interactions with Harvester",
+
+  "container.feeding_station": "Feeding Station",
+  "block.sib_energy_craft.feeding_station": "Feeding Station",
+  "stat.sib_energy_craft.interact_with_feeding_station": "Interactions with Feeding Station",
+  "screen.sib_energy_craft.feeding_station.button.mode.adult_only": "Adult Only",
+  "screen.sib_energy_craft.feeding_station.button.mode.baby_only": "Baby Only",
+  "screen.sib_energy_craft.feeding_station.button.mode.all": "All"
 }

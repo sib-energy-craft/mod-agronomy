@@ -2,6 +2,7 @@
 {
   "replace": false,
   "values": [
-    "sib_energy_craft:harvester"
+    "sib_energy_craft:harvester",
+    "sib_energy_craft:feeding_station"
   ]
 }
