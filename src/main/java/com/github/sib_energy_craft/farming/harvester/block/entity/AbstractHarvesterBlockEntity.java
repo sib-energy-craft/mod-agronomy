@@ -1,8 +1,8 @@
 package com.github.sib_energy_craft.farming.harvester.block.entity;
 
-import com.github.sib_energy_craft.farming.harvester.block.AbstractHarvesterBlock;
 import com.github.sib_energy_craft.energy_api.Energy;
 import com.github.sib_energy_craft.energy_api.items.ChargeableItem;
+import com.github.sib_energy_craft.farming.harvester.block.AbstractHarvesterBlock;
 import com.github.sib_energy_craft.machines.block.entity.AbstractEnergyMachineBlockEntity;
 import com.github.sib_energy_craft.machines.block.entity.EnergyMachineInventoryType;
 import net.minecraft.block.Block;
@@ -84,19 +84,22 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
             }
         }
 
-        var neighborPos = pos
-                .up()
-                .offset(Direction.Axis.X, harvestPos.x)
-                .offset(Direction.Axis.Z, harvestPos.y);
+        for(int i = -radius; i <= radius; i++) {
+            var neighborPos = pos
+                    .offset(Direction.Axis.X, harvestPos.x)
+                    .offset(Direction.Axis.Y, i)
+                    .offset(Direction.Axis.Z, harvestPos.y);
 
-        var neighborState = world.getBlockState(neighborPos);
-        var neighborBlock = neighborState.getBlock();
-        if (!(neighborBlock instanceof CropBlock cropBlock)) {
-            return false;
-        }
-        var age = cropBlock.getAge(neighborState);
-        var maxAge = cropBlock.getMaxAge();
-        if (Objects.equals(age, maxAge)) {
+            var neighborState = world.getBlockState(neighborPos);
+            var neighborBlock = neighborState.getBlock();
+            if (!(neighborBlock instanceof CropBlock cropBlock)) {
+                continue;
+            }
+            var age = cropBlock.getAge(neighborState);
+            var maxAge = cropBlock.getMaxAge();
+            if (!Objects.equals(age, maxAge)) {
+                continue;
+            }
             var toolStack = inventory.getStack(EnergyMachineInventoryType.SOURCE, TOOL_SLOT);
             var builder = new LootContextParameterSet.Builder(serverWorld)
                     .add(LootContextParameters.ORIGIN, neighborPos.toCenterPos())
@@ -105,17 +108,17 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
             boolean canInsert = true;
             var neighborItem = neighborBlock.asItem();
             for (var stack : droppedStacks) {
-                if(stack.isEmpty()) {
+                if (stack.isEmpty()) {
                     continue;
                 }
-                if(stack.getItem() == neighborItem) {
+                if (stack.getItem() == neighborItem) {
                     stack.decrement(1);
                 }
                 if (!inventory.canInsert(EnergyMachineInventoryType.OUTPUT, stack)) {
                     canInsert = false;
                 }
             }
-            if(canInsert) {
+            if (canInsert) {
                 processContext.put("ServerWorld", serverWorld);
                 processContext.put("NeighborPos", neighborPos);
                 processContext.put("NeighborBlock", neighborBlock);
