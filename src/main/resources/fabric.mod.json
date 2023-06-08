@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "sec-mod-farming",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "name": "SibEnergyCraft - Farming",
   "authors": [
     "sibmaks"
@@ -12,7 +12,7 @@
   "depends": {
     "fabricloader": ">=0.14.21",
     "fabric": "*",
-    "minecraft": "1.20-rc.1"
+    "minecraft": "1.20"
   },
   "entrypoints": {
     "main": [
