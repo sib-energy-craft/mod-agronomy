@@ -52,6 +52,6 @@ public abstract class SugarCaneBlockMixin extends AbstractBlock {
             player.dropItem(stack, false);
         }
 
-        return ActionResult.PASS;
+        return ActionResult.CONSUME;
     }
 }
