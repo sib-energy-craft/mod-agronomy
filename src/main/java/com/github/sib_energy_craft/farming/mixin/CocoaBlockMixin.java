@@ -3,7 +3,7 @@ package com.github.sib_energy_craft.farming.mixin;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
+import net.minecraft.block.CocoaBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -25,16 +26,12 @@ import java.util.Objects;
  * @author sibmaks
  * @since 0.0.1
  */
-@Mixin(CropBlock.class)
-public abstract class CropBlockMixin extends AbstractBlock {
+@Mixin(CocoaBlock.class)
+public abstract class CocoaBlockMixin extends AbstractBlock {
 
-    @Shadow
-    protected abstract IntProperty getAgeProperty();
+    @Shadow @Final public static IntProperty AGE;
 
-    @Shadow
-    public abstract BlockState withAge(int age);
-
-    public CropBlockMixin(Settings settings) {
+    public CocoaBlockMixin(Settings settings) {
         super(settings);
     }
 
@@ -48,16 +45,14 @@ public abstract class CropBlockMixin extends AbstractBlock {
         if (!(world instanceof ServerWorld serverWorld)) {
             return ActionResult.PASS;
         }
-        var ageProperty = getAgeProperty();
-        var age = state.get(ageProperty);
-        var maxAge = ageProperty.getValues().stream()
-                .max(Integer::compareTo)
-                .orElse(0);
+        var age = state.get(CocoaBlock.AGE);
+        var maxAge = CocoaBlock.MAX_AGE;
         if(Objects.equals(age, maxAge)) {
-            var droppedStacks = state.getDroppedStacks(new LootContext.Builder(serverWorld)
-                    .parameter(LootContextParameters.ORIGIN, player.getPos()).random(player.getRandom())
+            var parameter = new LootContext.Builder(serverWorld)
+                    .parameter(LootContextParameters.ORIGIN, pos.toCenterPos())
                     .parameter(LootContextParameters.TOOL, player.getStackInHand(hand))
-            );
+                    .luck(player.getLuck());
+            var droppedStacks = state.getDroppedStacks(parameter);
             var cropItem = asItem();
             for (var stack : droppedStacks) {
                 if(stack.isEmpty()) {
@@ -70,7 +65,7 @@ public abstract class CropBlockMixin extends AbstractBlock {
                     player.dropItem(stack, false);
                 }
             }
-            world.setBlockState(pos, withAge(1), Block.NOTIFY_LISTENERS);
+            world.setBlockState(pos, state.with(AGE, 0), Block.NOTIFY_LISTENERS);
             serverWorld.syncWorldEvent(WorldEvents.BONE_MEAL_USED, pos, 0);
             return ActionResult.CONSUME;
         }
