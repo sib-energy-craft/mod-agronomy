@@ -5,9 +5,7 @@ import com.github.sib_energy_craft.energy_api.items.ChargeableItem;
 import com.github.sib_energy_craft.farming.harvester.block.AbstractHarvesterBlock;
 import com.github.sib_energy_craft.machines.block.entity.AbstractEnergyMachineBlockEntity;
 import com.github.sib_energy_craft.machines.block.entity.EnergyMachineInventoryType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
@@ -92,39 +90,20 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
 
             var neighborState = world.getBlockState(neighborPos);
             var neighborBlock = neighborState.getBlock();
-            if (!(neighborBlock instanceof CropBlock cropBlock)) {
-                continue;
-            }
-            var age = cropBlock.getAge(neighborState);
-            var maxAge = cropBlock.getMaxAge();
-            if (!Objects.equals(age, maxAge)) {
-                continue;
-            }
-            var toolStack = inventory.getStack(EnergyMachineInventoryType.SOURCE, TOOL_SLOT);
-            var builder = new LootContextParameterSet.Builder(serverWorld)
-                    .add(LootContextParameters.ORIGIN, neighborPos.toCenterPos())
-                    .add(LootContextParameters.TOOL, toolStack);
-            var droppedStacks = neighborState.getDroppedStacks(builder);
-            boolean canInsert = true;
-            var neighborItem = neighborBlock.asItem();
-            for (var stack : droppedStacks) {
-                if (stack.isEmpty()) {
-                    continue;
+            if (neighborBlock instanceof CropBlock cropBlock) {
+                if(harvsetCropBlock(cropBlock, neighborState, neighborPos, serverWorld, processContext)) {
+                    return true;
                 }
-                if (stack.getItem() == neighborItem) {
-                    stack.decrement(1);
+            } else if(neighborBlock instanceof GourdBlock gourdBlock) {
+                if(harvsetBlock(gourdBlock, neighborState, Blocks.AIR.getDefaultState(),
+                        neighborPos, serverWorld, processContext, false)) {
+                    return true;
                 }
-                if (!inventory.canInsert(EnergyMachineInventoryType.OUTPUT, stack)) {
-                    canInsert = false;
+            } else if(neighborBlock instanceof CocoaBlock cocoaBlock) {
+                if(harvsetCocoaBlock(cocoaBlock, neighborState, neighborPos, serverWorld, processContext)) {
+                    return true;
                 }
             }
-            if (canInsert) {
-                processContext.put("ServerWorld", serverWorld);
-                processContext.put("NeighborPos", neighborPos);
-                processContext.put("NeighborBlock", neighborBlock);
-                processContext.put("DroppedStacks", droppedStacks);
-            }
-            return canInsert;
         }
         return false;
     }
@@ -138,9 +117,9 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
         working = true;
         var serverWorld = (ServerWorld) processContext.get("ServerWorld");
         var neighborPos = (BlockPos) processContext.get("NeighborPos");
-        var neighborBlock = (CropBlock) processContext.get("NeighborBlock");
+        var nextNeighborState = (BlockState) processContext.get("NextNeighborState");
         var droppedStacks = (List<ItemStack>) processContext.get("DroppedStacks");
-        serverWorld.setBlockState(neighborPos, neighborBlock.withAge(1), Block.NOTIFY_ALL);
+        serverWorld.setBlockState(neighborPos, nextNeighborState, Block.NOTIFY_ALL);
         for (var stack : droppedStacks) {
             inventory.addStack(EnergyMachineInventoryType.OUTPUT, stack);
         }
@@ -159,6 +138,68 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
     @Override
     public @NotNull Energy getEnergyUsagePerTick() {
         return block.getEnergyUsagePerTick();
+    }
+
+    private boolean harvsetCropBlock(CropBlock cropBlock,
+                                     BlockState neighborState,
+                                     BlockPos neighborPos,
+                                     ServerWorld serverWorld,
+                                     Map<String, Object> processContext) {
+        var age = cropBlock.getAge(neighborState);
+        var maxAge = cropBlock.getMaxAge();
+        if (!Objects.equals(age, maxAge)) {
+            return false;
+        }
+        return harvsetBlock(cropBlock, neighborState, cropBlock.withAge(1), neighborPos, serverWorld,
+                processContext, true);
+    }
+
+    private boolean harvsetCocoaBlock(CocoaBlock cocoaBlock,
+                                     BlockState neighborState,
+                                     BlockPos neighborPos,
+                                     ServerWorld serverWorld,
+                                     Map<String, Object> processContext) {
+        var age = neighborState.get(CocoaBlock.AGE);
+        var maxAge =  CocoaBlock.MAX_AGE;
+        if (!Objects.equals(age, maxAge)) {
+            return false;
+        }
+        return harvsetBlock(cocoaBlock, neighborState, neighborState.with(CocoaBlock.AGE, 0), neighborPos,
+                serverWorld, processContext, true);
+    }
+
+    private boolean harvsetBlock(Block gourdBlock,
+                                 BlockState neighborState,
+                                 BlockState nextNeighborState,
+                                 BlockPos neighborPos,
+                                 ServerWorld serverWorld,
+                                 Map<String, Object> processContext,
+                                 boolean decrementSeeds) {
+        var toolStack = inventory.getStack(EnergyMachineInventoryType.SOURCE, TOOL_SLOT);
+        var builder = new LootContextParameterSet.Builder(serverWorld)
+                .add(LootContextParameters.ORIGIN, neighborPos.toCenterPos())
+                .add(LootContextParameters.TOOL, toolStack);
+        var droppedStacks = neighborState.getDroppedStacks(builder);
+        boolean canInsert = true;
+        var neighborItem = gourdBlock.asItem();
+        for (var stack : droppedStacks) {
+            if (stack.isEmpty()) {
+                continue;
+            }
+            if (decrementSeeds && stack.getItem() == neighborItem) {
+                stack.decrement(1);
+            }
+            if (!inventory.canInsert(EnergyMachineInventoryType.OUTPUT, stack)) {
+                canInsert = false;
+            }
+        }
+        if (canInsert) {
+            processContext.put("ServerWorld", serverWorld);
+            processContext.put("NeighborPos", neighborPos);
+            processContext.put("NextNeighborState", nextNeighborState);
+            processContext.put("DroppedStacks", droppedStacks);
+        }
+        return canInsert;
     }
 }
 
