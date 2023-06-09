@@ -28,9 +28,11 @@ import java.util.Objects;
 @Mixin(CropBlock.class)
 public abstract class CropBlockMixin extends AbstractBlock {
 
-    @Shadow public abstract IntProperty getAgeProperty();
+    @Shadow
+    protected abstract IntProperty getAgeProperty();
 
-    @Shadow public abstract BlockState withAge(int age);
+    @Shadow
+    public abstract BlockState withAge(int age);
 
     public CropBlockMixin(Settings settings) {
         super(settings);
