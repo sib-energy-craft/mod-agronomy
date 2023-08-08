@@ -5,6 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -52,6 +54,8 @@ public abstract class SugarCaneBlockMixin extends AbstractBlock {
             player.dropItem(stack, false);
         }
 
-        return ActionResult.CONSUME;
+        player.playSound(SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 1, 1);
+
+        return ActionResult.PASS;
     }
 }
