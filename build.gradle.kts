@@ -108,7 +108,7 @@ publishing {
             from(components["java"])
             pom {
                 packaging = "jar"
-                url = "https://github.com/sib-energy-craft/mod-pipes"
+                url = "https://github.com/sib-energy-craft/mod-farming"
 
                 licenses {
                     license {
@@ -118,9 +118,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:https://github.com/sib-energy-craft/mod-pipes.git")
+                    connection.set("scm:https://github.com/sib-energy-craft/mod-farming.git")
                     developerConnection.set("scm:git:ssh://github.com/sib-energy-craft")
-                    url.set("https://github.com/sib-energy-craft/mod-pipes")
+                    url.set("https://github.com/sib-energy-craft/mod-farming")
                 }
 
                 developers {
@@ -145,7 +145,7 @@ publishing {
         }
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/sib-energy-craft/mod-pipes")
+            url = uri("https://maven.pkg.github.com/sib-energy-craft/mod-farming")
             credentials {
                 username = project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.key")?.toString() ?: System.getenv("GITHUB_TOKEN")
