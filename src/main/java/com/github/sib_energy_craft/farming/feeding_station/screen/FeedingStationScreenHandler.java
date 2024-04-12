@@ -1,5 +1,6 @@
 package com.github.sib_energy_craft.farming.feeding_station.screen;
 
+import com.github.sib_energy_craft.farming.feeding_station.FeedingStationMode;
 import com.github.sib_energy_craft.farming.feeding_station.load.ScreenHandlers;
 import com.github.sib_energy_craft.machines.screen.layout.MultiSlotMachineLayoutManager;
 import net.minecraft.entity.player.PlayerInventory;
@@ -40,15 +41,33 @@ public class FeedingStationScreenHandler extends AbstractFeedingStationScreenHan
                                        @NotNull PlayerInventory playerInventory,
                                        @NotNull Inventory inventory,
                                        @NotNull World world,
-                                       @NotNull BlockPos pos) {
-        super(ScreenHandlers.FEEDING_STATION, syncId, playerInventory, inventory, 9, 0, LAYOUT_MANAGER,
-                ScreenHandlerContext.create(world, pos));
+                                       @NotNull BlockPos pos,
+                                       @NotNull FeedingStationMode feedingStationMode) {
+        super(
+                ScreenHandlers.FEEDING_STATION,
+                syncId,
+                playerInventory,
+                inventory,
+                9,
+                0,
+                feedingStationMode,
+                LAYOUT_MANAGER,
+                ScreenHandlerContext.create(world, pos)
+        );
     }
 
     public FeedingStationScreenHandler(int syncId,
                                        @NotNull PlayerInventory playerInventory,
                                        @NotNull PacketByteBuf packetByteBuf) {
-        super(ScreenHandlers.FEEDING_STATION, syncId, playerInventory, 9, 0, LAYOUT_MANAGER);
+        super(
+                ScreenHandlers.FEEDING_STATION,
+                syncId,
+                playerInventory,
+                9,
+                0,
+                packetByteBuf.readEnumConstant(FeedingStationMode.class),
+                LAYOUT_MANAGER
+        );
 
     }
 }

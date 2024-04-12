@@ -1,10 +1,12 @@
 package com.github.sib_energy_craft.farming.feeding_station.block;
 
+import com.github.sib_energy_craft.energy_api.Energy;
+import com.github.sib_energy_craft.energy_api.EnergyLevel;
 import com.github.sib_energy_craft.farming.feeding_station.block.entity.FeedingStationBlockEntity;
 import com.github.sib_energy_craft.farming.feeding_station.load.Entities;
 import com.github.sib_energy_craft.farming.feeding_station.load.Stats;
-import com.github.sib_energy_craft.energy_api.Energy;
-import com.github.sib_energy_craft.energy_api.EnergyLevel;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -20,9 +22,13 @@ import org.jetbrains.annotations.Nullable;
  * @author sibmaks
  * @since 0.0.4
  */
+@Getter
 public class FeedingStationBlock extends AbstractFeedingStationBlock {
+    private final MapCodec<FeedingStationBlock> codec;
+
     public FeedingStationBlock(@NotNull Settings settings) {
-        super(settings, EnergyLevel.L1, 800, Energy.of(4), 5);
+        super(settings, EnergyLevel.L1, new Energy(800), new Energy(4), 5);
+        this.codec = createCodec(FeedingStationBlock::new);
     }
 
     @NotNull

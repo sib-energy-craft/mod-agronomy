@@ -5,6 +5,8 @@ import com.github.sib_energy_craft.farming.harvester.load.Entities;
 import com.github.sib_energy_craft.farming.harvester.load.Stats;
 import com.github.sib_energy_craft.energy_api.Energy;
 import com.github.sib_energy_craft.energy_api.EnergyLevel;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -20,9 +22,13 @@ import org.jetbrains.annotations.Nullable;
  * @since 0.0.2
  * @author sibmaks
  */
+@Getter
 public class HarvesterBlock extends AbstractHarvesterBlock {
+    private final MapCodec<HarvesterBlock> codec;
+
     public HarvesterBlock(@NotNull Settings settings) {
-        super(settings, EnergyLevel.L1, 800, Energy.of(4), 4);
+        super(settings, EnergyLevel.L1, new Energy(800), new Energy(4), 4);
+        this.codec = createCodec(HarvesterBlock::new);
     }
 
     @NotNull

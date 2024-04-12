@@ -1,5 +1,6 @@
 package com.github.sib_energy_craft.farming.feeding_station.screen;
 
+import com.github.sib_energy_craft.farming.feeding_station.FeedingStationMode;
 import com.github.sib_energy_craft.farming.feeding_station.block.entity.AbstractFeedingStationBlockEntity;
 import com.github.sib_energy_craft.machines.screen.AbstractEnergyMachineScreenHandler;
 import com.github.sib_energy_craft.machines.screen.layout.SlotLayoutManager;
@@ -26,8 +27,9 @@ public abstract class AbstractFeedingStationScreenHandler extends AbstractEnergy
                                                   @NotNull PlayerInventory playerInventory,
                                                   int sourceSlots,
                                                   int outputSlots,
+                                                  @NotNull FeedingStationMode feedingStationMode,
                                                   @NotNull SlotLayoutManager slotLayoutManager) {
-        super(type, syncId, playerInventory, sourceSlots, outputSlots, new FeedingStationState(), slotLayoutManager);
+        super(type, syncId, playerInventory, sourceSlots, outputSlots, new FeedingStationState(feedingStationMode), slotLayoutManager);
         this.context = ScreenHandlerContext.EMPTY;
     }
 
@@ -37,9 +39,19 @@ public abstract class AbstractFeedingStationScreenHandler extends AbstractEnergy
                                                   @NotNull Inventory inventory,
                                                   int sourceSlots,
                                                   int outputSlots,
+                                                  @NotNull FeedingStationMode feedingStationMode,
                                                   @NotNull SlotLayoutManager slotLayoutManager,
                                                   @NotNull ScreenHandlerContext context) {
-        super(type, syncId, playerInventory, inventory, sourceSlots, outputSlots, new FeedingStationState(), slotLayoutManager);
+        super(
+                type,
+                syncId,
+                playerInventory,
+                inventory,
+                sourceSlots,
+                outputSlots,
+                new FeedingStationState(feedingStationMode),
+                slotLayoutManager
+        );
         this.context = context;
     }
 

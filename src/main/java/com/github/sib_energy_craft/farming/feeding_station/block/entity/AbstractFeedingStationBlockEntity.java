@@ -1,22 +1,26 @@
 package com.github.sib_energy_craft.farming.feeding_station.block.entity;
 
 import com.github.sib_energy_craft.energy_api.Energy;
-import com.github.sib_energy_craft.energy_api.items.ChargeableItem;
 import com.github.sib_energy_craft.farming.feeding_station.FeedingStationMode;
 import com.github.sib_energy_craft.farming.feeding_station.FeedingStationTypedProperties;
 import com.github.sib_energy_craft.farming.feeding_station.block.AbstractFeedingStationBlock;
 import com.github.sib_energy_craft.machines.block.entity.AbstractEnergyMachineBlockEntity;
 import com.github.sib_energy_craft.machines.block.entity.EnergyMachineInventoryType;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +35,7 @@ public abstract class AbstractFeedingStationBlockEntity<T extends AbstractFeedin
 
     private final Box feedingArea;
     @Setter
+    @Getter
     private FeedingStationMode feedingStationMode;
 
     protected AbstractFeedingStationBlockEntity(@NotNull BlockEntityType<?> entityType,
@@ -39,7 +44,10 @@ public abstract class AbstractFeedingStationBlockEntity<T extends AbstractFeedin
                                                 @NotNull T block) {
         super(entityType, pos, state, block, 9, 0, 1);
         int radius = block.getRadius();
-        this.feedingArea = new Box(pos.add(-radius, -radius, -radius), pos.add(radius, radius, radius));
+        this.feedingArea = new Box(
+                Vec3d.of(pos.add(-radius, -radius, -radius)),
+                Vec3d.of(pos.add(radius, radius, radius))
+        );
         this.feedingStationMode = FeedingStationMode.ADULT_ONLY;
         this.energyMachinePropertyMap.add(FeedingStationTypedProperties.MODE, () -> feedingStationMode.ordinal());
     }
@@ -55,22 +63,6 @@ public abstract class AbstractFeedingStationBlockEntity<T extends AbstractFeedin
     protected void writeNbt(@NotNull NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putString("FeedingStationMode", feedingStationMode.name());
-    }
-
-    @Override
-    public boolean isValid(int slot, @NotNull ItemStack stack) {
-        var slotType = inventory.getType(slot);
-        if (slotType == EnergyMachineInventoryType.OUTPUT) {
-            return false;
-        }
-        if(slotType == EnergyMachineInventoryType.CHARGE) {
-            var item = stack.getItem();
-            if(item instanceof ChargeableItem chargeableItem) {
-                return chargeableItem.hasEnergy(stack);
-            }
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -151,7 +143,7 @@ public abstract class AbstractFeedingStationBlockEntity<T extends AbstractFeedin
         breedingItemStack.decrement(1);
         if(animal.isBaby()) {
             int breadingAge = animal.getBreedingAge();
-            animal.growUp(AnimalEntity.toGrowUpAge(-breadingAge), true);
+            animal.growUp(PassiveEntity.toGrowUpAge(-breadingAge), true);
         } else {
             animal.lovePlayer(null);
         }
@@ -170,6 +162,12 @@ public abstract class AbstractFeedingStationBlockEntity<T extends AbstractFeedin
     @Override
     public @NotNull Energy getEnergyUsagePerTick() {
         return block.getEnergyUsagePerTick();
+    }
+
+    @Override
+    public void writeScreenOpeningData(@NotNull ServerPlayerEntity player,
+                                       @NotNull PacketByteBuf buf) {
+        buf.writeEnumConstant(feedingStationMode);
     }
 }
 
