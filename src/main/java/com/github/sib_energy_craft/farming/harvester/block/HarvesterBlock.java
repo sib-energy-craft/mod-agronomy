@@ -17,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @since 0.0.2
  * @author sibmaks
+ * @since 0.0.2
  */
 public class HarvesterBlock extends AbstractHarvesterBlock {
     public HarvesterBlock(@NotNull Settings settings) {
-        super(settings, EnergyLevel.L1, 800, Energy.of(4), 4);
+        super(settings, EnergyLevel.L1, new Energy(800), new Energy(4), 4);
     }
 
     @NotNull

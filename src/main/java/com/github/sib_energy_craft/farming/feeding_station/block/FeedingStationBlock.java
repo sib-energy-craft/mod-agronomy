@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class FeedingStationBlock extends AbstractFeedingStationBlock {
     public FeedingStationBlock(@NotNull Settings settings) {
-        super(settings, EnergyLevel.L1, 800, Energy.of(4), 5);
+        super(settings, EnergyLevel.L1, new Energy(800), new Energy(4), 5);
     }
 
     @NotNull

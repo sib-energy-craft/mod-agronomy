@@ -94,8 +94,8 @@ public abstract class AbstractHarvesterBlockEntity<T extends AbstractHarvesterBl
                 if(harvsetCropBlock(cropBlock, neighborState, neighborPos, serverWorld, processContext)) {
                     return true;
                 }
-            } else if(neighborBlock instanceof GourdBlock gourdBlock) {
-                if(harvsetBlock(gourdBlock, neighborState, Blocks.AIR.getDefaultState(),
+            } else if(neighborBlock instanceof PumpkinBlock pumpkinBlock) {
+                if(harvsetBlock(pumpkinBlock, neighborState, Blocks.AIR.getDefaultState(),
                         neighborPos, serverWorld, processContext, false)) {
                     return true;
                 }

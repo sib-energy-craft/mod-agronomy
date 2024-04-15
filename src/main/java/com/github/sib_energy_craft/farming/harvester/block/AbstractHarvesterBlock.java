@@ -5,10 +5,7 @@ import com.github.sib_energy_craft.energy_api.Energy;
 import com.github.sib_energy_craft.energy_api.EnergyLevel;
 import com.github.sib_energy_craft.machines.block.AbstractEnergyMachineBlock;
 import lombok.Getter;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -36,7 +33,7 @@ public abstract class AbstractHarvesterBlock extends AbstractEnergyMachineBlock 
 
     protected AbstractHarvesterBlock(@NotNull AbstractBlock.Settings settings,
                                      @NotNull EnergyLevel energyLevel,
-                                     int maxCharge,
+                                     @NotNull Energy maxCharge,
                                      @NotNull Energy energyUsagePerTick,
                                      int radius) {
         super(settings, energyLevel, maxCharge);
@@ -78,7 +75,10 @@ public abstract class AbstractHarvesterBlock extends AbstractEnergyMachineBlock 
             @NotNull World world,
             @NotNull BlockEntityType<T> givenType,
             @NotNull BlockEntityType<E> expectedType) {
-        return world.isClient ? null : AbstractHarvesterBlock.checkType(givenType, expectedType,
-                AbstractHarvesterBlockEntity::simpleProcessingTick);
+        return world.isClient ? null : BlockWithEntity.validateTicker(
+                givenType,
+                expectedType,
+                AbstractHarvesterBlockEntity::simpleProcessingTick
+        );
     }
 }
